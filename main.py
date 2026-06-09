@@ -37,7 +37,19 @@ TEXT_NAV = "ffffff"
 W, H = 1400, 780
 Nav_H = 110
 
+def load(name: str, size: tuple) -> ImageTk.PhotoImage:
+    path = os.path.join(BASE, ASSETS[name])
+    img  = Image.open(path).convert("RGBA").resize(size, Image.LANCZOS)
+    return ImageTk.PhotoImage(img)
 
+def nav_btn(parent, text, icon_normal, icon_hover, cmd):
+    #Return a frame that behaves like a nav button with hover effect.
+    frm = tk.Frame(parent, bg=BG_NAV, cursor="hand2")
+    lbl_icon = tk.Label(frm, image=icon_normal, bg=BG_NAV)
+    lbl_icon.pack()
+    lbl_text = tk.Label(frm, text=text, fg=TEXT_W, bg=BG_NAV,
+                        font=("Arial", 13, "bold"))
+    lbl_text.pack()
 
 class App(tk.Tk):
     def __init__(self):
