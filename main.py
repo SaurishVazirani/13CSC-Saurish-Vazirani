@@ -39,3 +39,27 @@ ROUTINES = {
     ],
 }
 
+def hover(widget, on_col, off_col):
+    widget.bind("<Enter>", lambda e: widget.config(bg=on_col))
+    widget.bind("<Leave>", lambda e: widget.config(bg=off_col))
+
+
+class RepFit(tk.Tk):
+
+    def __init__(self):
+        super().__init__()
+        self.title("RepFit – Progress, Not Perfection")
+        self.geometry(f"{W}x{H}")
+        self.resizable(False, False)
+        self.configure(bg=BG_LIGHT)
+
+        self.log: list[dict] = []
+        self._timer_secs    = 0
+        self._timer_running = False
+
+        self._build_nav()
+        self.show_home()
+
+#NavBar
+
+
