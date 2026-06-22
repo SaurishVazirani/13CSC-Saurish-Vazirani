@@ -61,5 +61,20 @@ class RepFit(tk.Tk):
         self.show_home()
 
 #NavBar
-
+def _build_nav(self):
+    self.nav = tk.Frame(self, bg=BG_NAV, height=NAV_H)
+    self.nav.pack(side="bottom", fill="x")
+    self.nav.pack_propagate(False)
+    self._nav_btns = {}
+    for i, (label, key, cmd) in enumerate([
+        ("Home", "home", self.show_home),
+        ("Workouts", "workouts", self.show_workouts),
+        ("Logs", "logs", self.show_logs),
+    ]):
+        self.nav.columnconfigure(i, weight=1)
+        btn = tk.Label(self.nav, text=label, bg=BG_NAV, fg=TEXT_W, font=("Arial", 15, "bold"), cursor="hand2", pady=18)
+        btn.grid(row=0, column=i, sticky="nsew")
+        btn.bind("<Button-1>", lambda e, c=cmd: c())
+        hover(btn, "#4a6ae8", BG_NAV)
+        self._nav_btns[key] = btn
 
