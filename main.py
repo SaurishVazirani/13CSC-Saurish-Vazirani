@@ -67,9 +67,9 @@ def _build_nav(self):
     self.nav.pack_propagate(False)
     self._nav_btns = {}
     for i, (label, key, cmd) in enumerate([
-        ("Home", "home", self.show_home),
-        ("Workouts", "workouts", self.show_workouts),
-        ("Logs", "logs", self.show_logs),
+        ("🏠 Home", "home", self.show_home),
+        ("🏋️ Workouts", "workouts", self.show_workouts),
+        ("📖 Logs", "logs", self.show_logs),
     ]):
         self.nav.columnconfigure(i, weight=1)
         btn = tk.Label(self.nav, text=label, bg=BG_NAV, fg=TEXT_W, font=("Arial", 15, "bold"), cursor="hand2", pady=18)
@@ -77,4 +77,39 @@ def _build_nav(self):
         btn.bind("<Button-1>", lambda e, c=cmd: c())
         hover(btn, "#4a6ae8", BG_NAV)
         self._nav_btns[key] = btn
+
+        def _set_active_nav(self, active: str):
+            for key, btn in self._nav_btns.items():
+                if key == active:
+                    btn.config(bg=BTN_DARK, fg=TEXT_W)
+                    btn.unbind("<Enter>");
+                    btn.unbind("<Leave>")
+                else:
+                    btn.config(bg=BG_NAV, fg=TEXT_W)
+                    hover(btn, "#4a6ae8", BG_NAV)
+
+        def _clear(self):
+            if hasattr(self, "content"):
+                self.content.destroy()
+            self.content = tk.Frame(self, bg=BG_LIGHT)
+            self.content.pack(side="top", fill="both", expand=True)
+
+        def show_home(self):
+            self._clear()
+            self._set_active_nav("home")
+            f = self.content
+            tk.Label(f, text="🏋️", font=("Arial", 70), bg=BG_LIGHT).pack(pady=(50, 0))
+            tk.Label(f, text="RepFit", font=("Arial Black", 64, "bold"),
+                     bg=BG_LIGHT, fg=TEXT_D).pack()
+            tk.Label(f, text="Progress, Not Perfection",
+                     font=("Arial", 22, "bold"), bg=BG_LIGHT, fg=TEXT_D).pack(pady=(0, 30))
+            btn = tk.Label(f, text="  Start Workout  ", bg=BTN_DARK, fg=TEXT_W,
+                           font=("Arial", 20), cursor="hand2", padx=24, pady=12)
+            btn.pack()
+            hover(btn, "#333333", BTN_DARK)
+            btn.bind("<Button-1>", lambda e: self.show_workouts())
+
+
+
+
 
