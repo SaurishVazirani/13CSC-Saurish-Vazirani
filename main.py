@@ -94,6 +94,8 @@ def _build_nav(self):
             self.content = tk.Frame(self, bg=BG_LIGHT)
             self.content.pack(side="top", fill="both", expand=True)
 
+
+        #Home Page
         def show_home(self):
             self._clear()
             self._set_active_nav("home")
@@ -108,6 +110,40 @@ def _build_nav(self):
             btn.pack()
             hover(btn, "#333333", BTN_DARK)
             btn.bind("<Button-1>", lambda e: self.show_workouts())
+
+        #Workout Page
+        def show_workouts(self, preset_name=None, preset_exercises=None):
+            self._clear()
+            self._set_active_nav("workouts")
+            self._timer_running = False
+
+            #Layout and dividers
+            f = self.content
+            left = tk.Frame(f, bg=BG_LIGHT, width=210)
+            right = tk.Frame(f, bg=BG_LIGHT, width=200)
+            left.pack(side="left", fill="y", padx=(8,0), pady=8)
+            left.pack_propagate(False)
+            tk.Frame(f, bg="#2244aa", width=2).pack(side="left", fill="y", pady=8)
+            right.pack(side="right", fill="y", padx=(0,8), pady=8)
+            right.pack_propagate(False)
+            tk.Frame(f, bg="#2244aa", width=2).pack(side="right", fill="y", pady=8)
+
+            #scroll feature
+            mid_canvas = tk.Canvas(f, bg=BG_LIGHT, highlightthickness=0)
+            mid_vsb = tk.Scrollbar(mid_canvas, orient="vertical", command=mid_canvas.yview)
+            mid_canvas.configure(yscrollcommand=mid_vsb.set)
+            mid_vsb.pack(side="right", fill="y")
+            mid_canvas.pack(side="left", fill="both", expand=True)
+            centre = tk.Frame(mid_canvas, bg=BG_LIGHT)
+            mid_canvas.create_window((0, 0), window=centre, anchor="nw")
+            centre.bind("<Configure>", lambda e: mid_canvas.configure(scrollregion=mid_canvas.bbox("all")))
+            mid_canvas.bind("<MouseWheel>", lambda e: mid_canvas.yview_scroll(-1*(e.delta//120), "units"))
+
+            #Routine Buttons on the left of window
+            tk.Label(left, text="Workouts\nRoutines", bg=BG_LIGHT, fg=TEXT_D, font=("Arial", 13, "bold"), justify="centre").pack(pady=(10, 8))
+
+
+
 
 
 
